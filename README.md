@@ -17,15 +17,8 @@ A systematic portfolio that blends eight published tactical asset-allocation str
 | **Scale** | 8 strategies, 19 ETFs, 2 books, 40 sleeves; ~20,000 lines of Python, 116 modules, 400+ tests, 80+ research notes |
 | **Data** | Free sources only: ETF prices plus index and macro histories stitched back to 1926 |
 | **Discipline** | Every design test registered before its result is seen; unflattering results reported, never discarded |
-| **Key result** | Executable version (Sep 2008 – Sep 2026): 5.7% a year, worst drawdown −8.5%, against −41.8% for SPY (S&P 500 ETF). Hypothetical, gross of fees |
+| **Focus** | The research process, execution design and operations. Backtest results are background context, not a performance claim |
 | **Stack** | pandas, NumPy, SciPy, pytest, parquet, Interactive Brokers API (ib_async), FRED and French data, GitHub Actions |
-
-<picture>
-  <source media="(prefers-color-scheme: dark)" srcset="assets/results_dark.png">
-  <img alt="Growth of $1 and drawdown, Sep 2008 to Sep 2026: the 20-sleeve grid ends at $2.72 with a worst drawdown of -8.5%; single-date next-day fill $2.57 and -13.0%; SPY $8.25 and -41.8%" src="assets/results_light.png">
-</picture>
-
-*The chart shows the trade-off the design accepts. The portfolio gives up most of the equity-market return in exchange for drawdowns a fifth the size of the S&P 500's, staying inside the mandate's −15% limit throughout.*
 
 **Contents:** [1 Summary](#1-summary) · [2 Investment design](#2-the-investment-design) · [3 Research environment](#3-the-research-environment) · [4 Research discipline](#4-research-discipline) · [5 Findings](#5-what-the-research-found) · [6 Execution](#6-execution-from-a-signal-to-a-fill) · [7 Two books](#7-two-books-and-drawdown-control) · [8 Operations](#8-running-it-paper-trading-and-operations) · [9 Results and limits](#9-results-and-what-they-do-not-show) · [10 Skills and lessons](#10-skills-and-lessons)
 
@@ -39,7 +32,7 @@ The Wife Fund is a systematic, rules-based portfolio of exchange-traded funds (E
 
 The project is as much about **research process** as about returns. Its central rule is that a design change needs a written reason recorded *before* its results are seen. Variants found after seeing results are reported as sensitivities and never adopted on backtest performance. Results that look odd are flagged and evaluated, never discarded.
 
-**Headline (hypothetical, gross of fees).** These are the figures for the version that is actually traded: a daily grid of 20 staggered rebalancing sleeves, filled at the next day's closing auction. Over September 2008 to September 2026 the backtest returns 5.68% a year, with volatility of 6.3%, a Sharpe ratio of 0.71 over T-bills, and a worst drawdown of −8.5%. For comparison, the "textbook" backtest that trades at the signal close returns 5.83% with a −12.1% worst drawdown, but that version cannot be executed. The executable figures fall short of the project's own 8% return target, and the documents say so.
+**Backtest context (hypothetical, gross of fees).** The backtests show what the design does rather than promise a result. The version that is actually traded (20 staggered rebalancing sleeves, filled at the next day's closing auction) returns 5.7% a year over 2008–2026, with a worst drawdown of −8.5%. That is below the project's own 8% target, and the documents say so. Section 9 gives the full table and a long-history view back to 1972.
 
 | Area | What was built |
 |---|---|
@@ -306,6 +299,15 @@ It exists as a local page that the scheduled jobs refresh, and as a phone-friend
 ---
 
 ## 9. Results, and what they do not show
+
+### Long-history background
+
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="assets/long_history_dark.png">
+  <img alt="Growth of $1 and drawdown, 1972 to 2026, for the fund's long-history backtest and US equity" src="assets/long_history_light.png">
+</picture>
+
+*Background only. This is the signal-close backtest (not executable) on stitched index data; before 1990 one input uses a lower-quality proxy (developed ex-US equity standing in for emerging markets). It shows how the design behaves across rate regimes and bear markets (1973–74, 1987, 2000–02, 2008, 2022). It does not forecast returns.*
 
 **Reference results** (hypothetical, gross of fees, September 2008 – September 2026 unless noted):
 
