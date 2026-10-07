@@ -2,6 +2,33 @@
 
 **James Crowell** · October 2026
 
+![Python](https://img.shields.io/badge/Python-3.11-3776AB?logo=python&logoColor=white)
+![Tests](https://img.shields.io/badge/tests-400%2B%20passing-2ea44f)
+![Pre-registered tests](https://img.shields.io/badge/pre--registered%20tests-27-8a5a14)
+![Broker](https://img.shields.io/badge/IBKR-paper%20trading%20live-d03b3b)
+![Status](https://img.shields.io/badge/status-active-blue)
+
+A systematic portfolio that blends eight published tactical asset-allocation strategies under a macro regime overlay. It is taken from primary-source research to a tested Python research environment, and then to an automated, reconciled and monitored paper-trading operation.
+
+| At a glance | |
+|---|---|
+| **Role** | Designer, researcher and portfolio manager (sole). Software built with Claude Code as engineering partner |
+| **Scope** | Strategy research → data and backtest engine → execution design → live paper trading → monitoring |
+| **Scale** | 8 strategies, 19 ETFs, 2 books, 40 sleeves; ~20,000 lines of Python, 116 modules, 400+ tests, 80+ research notes |
+| **Data** | Free sources only: ETF prices plus index and macro histories stitched back to 1926 |
+| **Discipline** | Every design test registered before its result is seen; unflattering results reported, never discarded |
+| **Key result** | Executable version (Sep 2008 – Sep 2026): 5.7% a year, worst drawdown −8.5%, against −41.8% for SPY (S&P 500 ETF). Hypothetical, gross of fees |
+| **Stack** | pandas, NumPy, SciPy, pytest, parquet, Interactive Brokers API (ib_async), FRED and French data, GitHub Actions |
+
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="assets/results_dark.png">
+  <img alt="Growth of $1 and drawdown, Sep 2008 to Sep 2026: the 20-sleeve grid ends at $2.72 with a worst drawdown of -8.5%; single-date next-day fill $2.57 and -13.0%; SPY $8.25 and -41.8%" src="assets/results_light.png">
+</picture>
+
+*The chart shows the trade-off the design accepts. The portfolio gives up most of the equity-market return in exchange for drawdowns a fifth the size of the S&P 500's, staying inside the mandate's −15% limit throughout.*
+
+**Contents:** [1 Summary](#1-summary) · [2 Investment design](#2-the-investment-design) · [3 Research environment](#3-the-research-environment) · [4 Research discipline](#4-research-discipline) · [5 Findings](#5-what-the-research-found) · [6 Execution](#6-execution-from-a-signal-to-a-fill) · [7 Two books](#7-two-books-and-drawdown-control) · [8 Operations](#8-running-it-paper-trading-and-operations) · [9 Results and limits](#9-results-and-what-they-do-not-show) · [10 Skills and lessons](#10-skills-and-lessons)
+
 > **Disclaimer.** This document describes a personal research and paper-trading project. All performance figures are hypothetical: they come from backtests or from a simulated (paper) brokerage account. They are shown gross of fees and transaction costs except where stated. Hypothetical results have inherent limits: they are produced with hindsight, they do not reflect trading with real money, and past results, real or simulated, do not predict future returns. Nothing here is investment advice or an offer of any security or service.
 
 ---
@@ -219,6 +246,23 @@ On the traded reference, both books stay inside the limit:
 ---
 
 ## 8. Running it: paper trading and operations
+
+### System overview
+
+```mermaid
+flowchart LR
+  A[Free data<br/>ETFs, FRED, French,<br/>Shiller, NAREIT] --> B[Price and macro cache<br/>quality checks,<br/>data vintage]
+  B --> C[8 strategy signals<br/>pure functions]
+  C --> D[Blend + L1/L2 overlay<br/>two books, ladder]
+  D --> E[Daily sleeve signal<br/>20 sleeves per book]
+  E --> F[Pre-trade controls]
+  F --> G[IBKR closing auction<br/>LOC / close algo]
+  G --> H[Sleeve ledger<br/>reconcile to account]
+  H --> I[TCA, NAV, alerts]
+  I --> J[CWF dashboard<br/>GitHub dead-man check]
+  B --> R[Research engine<br/>pre-registered tests]
+  R -.decisions.-> D
+```
 
 ### The account and the ledger
 
